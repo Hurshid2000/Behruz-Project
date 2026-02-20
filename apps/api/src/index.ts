@@ -1,5 +1,6 @@
 import { config } from "dotenv";
 import { resolve, join } from "path";
+import { mkdirSync, existsSync } from "fs";
 
 config({ path: resolve(__dirname, "../../.env") });
 import Fastify from "fastify";
@@ -26,6 +27,7 @@ async function main() {
   await app.register(cors, { origin: true });
   await app.register(multipart);
   const uploadDir = join(process.cwd(), process.env.UPLOAD_DIR ?? "uploads");
+  if (!existsSync(uploadDir)) mkdirSync(uploadDir, { recursive: true });
   await app.register(fastifyStatic, {
     root: uploadDir,
     prefix: "/uploads/",

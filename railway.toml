@@ -3,6 +3,6 @@ builder = "nixpacks"
 buildCommand = "pnpm install && pnpm --filter prisma exec prisma generate && pnpm --filter api build"
 
 [deploy]
-startCommand = "pnpm --filter api start"
+startCommand = "pnpm --filter prisma exec prisma migrate deploy && pnpm --filter prisma exec prisma db seed && pnpm --filter api start"
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 3
