@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  passwordHash String    @map("password_hash")
+  role         Role      @default(operator)
+  createdAt    DateTime  @default(now()) @map("created_at")
+  weighings    Weighing[]
+
+  @@map("users")
+}
+
+model Supplier {
+  id        String     @id @default(cuid())
+  name      String     @unique
+  createdAt DateTime   @default(now()) @map("created_at")
+  weighings Weighing[]
+
+  @@map("suppliers")
+}
+
+model Weighing {
+  id          String    @id @default(uuid())
+  createdAt   DateTime  @default(now()) @map("created_at")
+  createdById String    @map("created_by")
+  carNumber   String    @map("car_number")
+  supplierId  String?   @map("supplier_id")
+  grossWeight Decimal   @map("gross_weight")
+  tareCount   Int       @map("tare_count")
+  tareWeight  Decimal   @map("tare_weight")
+  tareTotal   Decimal   @map("tare_total")
+  netWeight   Decimal   @map("net_weight")
+  photoUrl    String?   @map("photo_url")
+  note        String?
+
+  createdBy  User      @relation(fields: [createdById], references: [id])
+  supplier   Supplier? @relation(fields: [supplierId], references: [id])
+
+  @@map("weighings")
+}
+
+enum Role {
+  admin
+  operator
+  viewer
+}

@@ -1,0 +1,22 @@
+{
+  "name": "weighing-logs",
+  "private": true,
+  "scripts": {
+    "postinstall": "pnpm --filter prisma exec prisma generate",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck",
+    "dev:web": "pnpm --filter web dev",
+    "dev:api": "pnpm --filter api dev",
+    "build": "pnpm -r run build",
+    "db:generate": "pnpm --filter prisma exec prisma generate",
+    "db:migrate": "pnpm --filter prisma exec prisma migrate dev",
+    "db:seed": "pnpm --filter prisma exec prisma db seed"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "packageManager": "pnpm@9.14.2",
+  "dependencies": {
+    "prisma": "^7.4.1"
+  }
+}
